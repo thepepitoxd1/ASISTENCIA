@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASISTENCIA CINE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); /* Fuente moderna y legible */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #000000); /* Degradado oscuro y elegante */
+            color: #ecf0f1; /* Texto claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7); /* Contenedor semi-transparente oscuro */
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #f39c12; /* Amarillo mostaza para acento */
+            margin-bottom: 40px;
+            font-size: 3em;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra en el título */
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #ddd;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 15px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            background-color: #444;
+            color: #eee;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #f39c12; /* Resaltar al enfocar */
+        }
+
+        button[type="submit"] {
+            background-color: #e74c3c; /* Rojo más vivo */
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px); /* Ligeramente elevado al pasar el ratón */
+        }
+
+        .message-container {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .success-message {
+            color: #2ecc71; /* Verde éxito */
+        }
+
+        .error-message {
+            color: #e74c3c; /* Rojo error */
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>ASISTENCIA CINE</h1>
+        <form id="registroForm" action="https://script.google.com/macros/s/AKfycbxbBIN-lDfhSD0EQakDFIbdD4mgfAYn1HElO-8aWoZkBCwJsUR_pPvp2k2PyYwilW1D/exec" method="POST">
+            <div class="form-group">
+                <label for="nombre_completo">Nombre Completo:</label>
+                <input type="text" id="nombre_completo" name="nombre_completo" required>
+            </div>
+            <div class="form-group">
+                <label for="codigo_estudiante">Código de Estudiante:</label>
+                <input type="text" id="codigo_estudiante" name="codigo_estudiante" required>
+            </div>
+            <div class="form-group">
+                <label for="paralelo">Paralelo:</label>
+                <input type="text" id="paralelo" name="paralelo" required>
+            </div>
+            <div class="form-group">
+                <label for="semestre">Semestre:</label>
+                <input type="text" id="semestre" name="semestre" required>
+            </div>
+            <div class="form-group">
+                <label for="codigo_ticket">Código del Ticket:</label>
+                <input type="text" id="codigo_ticket" name="codigo_ticket" required>
+            </div>
+            <button type="submit">Registrar Asistencia</button>
+        </form>
+        <div id="mensaje" class="message-container"></div>
+    </div>
+
+    <script>
+        const registroForm = document.getElementById('registroForm');
+        const mensajeDiv = document.getElementById('mensaje');
+        const codigosUnicos = [
+            "a1b2c3d4e5", "f6g7h8i9j0", "k1l2m3n4o5", "p6q7r8s9t0", "u1v2w3x4y5",
+            "z6a7b8c9d0", "e1f2g3h4i5", "j6k7l8m9n0", "o1p2q3r4s5", "t6u7v8w9x0",
+            "y1z2a3b4c5", "d6e7f8g9h0", "i1j2k3l4m5", "n6o7p8q9r0", "s1t2u3v4w5",
+            "x6y7z8a9b0", "c1d2e3f4g5", "h6i7j8k9l0", "m1n2o3p4q5", "r6s7t8u9v0",
+            "w1x2y3z4a5", "b6c7d8e9f0", "g1h2i3j4k5", "l6m7n8o9p0", "q1r2s3t4u5",
+            "v6w7x8y9z0", "a5b4c3d2e1", "f0g9h8i7j6", "k5l4m3n2o1", "p0q9r8s7t6",
+            "u5v4w3x2y1", "z0a9b8c7d6", "e5f4g3h2i1", "j0k9l8m7n6", "o5p4q3r2s1",
+            "t0u9v8w7x6", "y5z4a3b2c1", "d0e9f8g7h6", "i5j4k3l2m1", "n0o9p8q7r6",
+            "s5t4u3v2w1", "x0y9z8a7b6", "c5d4e3f2g1", "h0i9j8k7l6", "m5n4o3p2q1",
+            "r0s9t8u7v6", "w5x4y3z2a1", "b0c9d8e7f6", "g5h4i3j2k1", "l0m9n8o7p6",
+            "q5r4s3t2u1", "v0w9x8y7z6", "1a2b3c4d5e", "6f7g8h9i0j", "1k2l3m4n5o",
+            "6p7q8r9s0t", "1u2v3w4x5y", "6z7a8b9c0d", "1e2f3g4h5i", "6j7k8l9m0n",
+            "1o2p3q4r5s", "6t7u8v9w0x", "1y2z3a4b5c", "6d7e8f9g0h", "1i2j3k4l5m",
+            "6n7o8p9q0r", "1s2t3u4v5w", "6x7y8z9a0b", "1c2d3e4f5g", "6h7i8j9k0l",
+            "1m2n3o4p5q", "6r7s8t9u0v", "1w2x3y4z5a", "6b7c8d9e0f", "1g2h3i4j5k",
+            "6l7m8n9o0p", "1q2r3s4t5u", "6v7w8x9y0z", "e5d4c3b2a1", "0j9i8h7g6f",
+            "o5n4m3l2k1", "0t9s8r7q6p", "y5x4w3v2u1", "0d9c8b7a6z", "i5h4g3f2e1",
+            "0n9m8l7k6j", "s5r4q3p2o1", "0x9w8v7u6t", "c5b4a3z2y1", "0h9g8f7e6d",
+            "m5l4k3j2i1", "0r9q8p7o6n", "w5v4u3t2s1", "0b9a8z7y6x", "g5f4e3d2c1",
+            "0l9k8j7i6h", "q5p4o3n2m1", "0v9u8t7s6r", "a5z4y3x2w1", "0f9e8d7c6b",
+            "k5j4i3h2g1", "0p9o8n7m6l", "u5t4s3r2q1", "0z9y8x7w6v", "b5a4z3y2x1",
+            "0g9f8e7d6c", "l5k4j3i2h1", "0q9p8o7n6m", "v5u4t3s2r1", "0a9z8y7x6w",
+            "f5e4d3c2b1", "0k9j8i7h6g", "p5o4n3m2l1", "0u9t8s7r6q", "z5y4x3w2v1",
+            "0c9b8a7z6y", "h5g4f3e2d1", "0m9l8k7j6i", "r5q4p3o2n1", "0w9v8u7t6s",
+            "x5w4v3u2t1", "0b9a8z7y6x", "c5b4a3z2y1", "0h9g8f7e6d", "d5c4b3a2z1",
+            "0m9l8k7j6i", "e5d4c3b2a1", "0r9q8p7o6n", "f5e4d3c2b1", "0w9v8u7t6s",
+            "g5f4e3d2c1", "0x9w8v7u6t", "h5g4f3e2d1", "0y9x8w7v6u", "i5h4g3f2e1",
+            "0z9y8x7w6v", "j5i4h3g2f1", "0a9z8y7x6w", "k5j4i3h2g1", "0b9a8z7y6x",
+            "l5k4j3i2h1", "0c9b8a7z6y", "m5l4k3j2i1", "0d9c8b7a6z", "n5m4l3k2j1",
+            "0e9d8c7b6a", "o5n4m3l2k1", "0f9e8d7c6b", "p5o4n3m2l1", "0g9f8e7d6c",
+            "q5p4o3n2m1", "0h9g8f7e6d", "r5q4p3o2n1", "0i9h8g7f6e", "s5r4q3p2o1",
+            "0j9i8h7g6f", "t5s4r3q2p1", "0k9j8i7h6g", "u5t4s3r2q1", "0l9k8j7i6h",
+            "v5u4t3s2r1", "0m9l8k7j6i", "w5v4u3t2s1", "0n9m8l7k6j", "x5w4v3u2t1",
+            "0o9n8m7k6l", "y5x4w3v2u1", "0p9o8n7m6l", "z5y4x3w2v1", "0q9p8o7n6m",
+            "A1B2C3D4E5", "F6G7H8I9J0", "K1L2M3N4O5", "P6Q7R8S9T0", "U1V2W3X4Y5",
+            "Z6A7B8C9D0", "E1F2G3H4I5", "J6K7L8M9N0", "O1P2Q3R4S5", "T6U7V8W9X0",
+            "Y1Z2A3B4C5", "D6E7F8G9H0", "I1J2K3L4M5", "N6O7P8Q9R0", "S1T2U3V4W5",
+            "X6Y7Z8A9B0", "C1D2E3F4G5", "H6I7J8K9L0", "M1N2O3P4Q5", "R6S7T8U9V0"
+        ];
+        const codigosUsadosLocal = []; // Lista para códigos usados en la sesión actual
+
+        registroForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(registroForm);
+            const codigoTicket = formData.get('codigo_ticket');
+
+            if (!codigosUnicos.includes(codigoTicket)) {
+                mensajeDiv.textContent = 'El código del ticket ingresado no es válido.';
+                mensajeDiv.className = 'error-message';
+                return;
+            }
+
+            if (codigosUsadosLocal.includes(codigoTicket)) {
+                mensajeDiv.textContent = 'Este código del ticket ya ha sido ingresado.';
+                mensajeDiv.className = 'error-message';
+                return;
+            }
+
+            codigosUsadosLocal.push(codigoTicket); // Marcar como
