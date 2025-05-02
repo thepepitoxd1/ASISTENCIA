@@ -97,6 +97,7 @@
         .error-message {
             color: #e74c3c; /* Rojo error */
         }
+
         .warning-box-top, .warning-box-bottom {
             background-color: #dc3545; /* Rojo Bootstrap */
             color: white;
@@ -117,6 +118,9 @@
 </head>
 <body>
     <div class="container">
+        <div class="warning-box-top">
+            Asegúrate de ingresar correctamente tus datos y el código del ticket, de no ser así se registrará como una falta.
+        </div>
         <h1>ASISTENCIA CINE</h1>
         <form id="registroForm" action="https://script.google.com/macros/s/AKfycbxbBIN-lDfhSD0EQakDFIbdD4mgfAYn1HElO-8aWoZkBCwJsUR_pPvp2k2PyYwilW1D/exec" method="POST">
             <div class="form-group">
@@ -142,6 +146,9 @@
             <button type="submit">Registrar Asistencia</button>
         </form>
         <div id="mensaje" class="message-container"></div>
+        <div class="warning-box-bottom">
+            El código de entrada y salida es personal. En caso de compartir el mismo código, se les aplicarán las sanciones correspondientes.
+        </div>
     </div>
 
     <script>
